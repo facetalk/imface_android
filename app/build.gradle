@@ -1,0 +1,60 @@
+repositories {
+    mavenLocal()
+}
+
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 'android-L'
+    buildToolsVersion "20.0.0"
+
+    defaultConfig {
+        applicationId "com.facehu.imface"
+        minSdkVersion 15
+        targetSdkVersion 'L'
+        versionCode 1
+        versionName "1.0.0"
+    }
+    signingConfigs {
+        releaseConfig {
+            storeFile file("facehu.jks")
+            storePassword "DCf2!aNd?-N105f"
+            keyAlias "facehu-release"
+            keyPassword "pm_*q)+ [+}S*{2"
+        }
+    }
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseConfig
+        }
+    }
+}
+
+apply plugin: 'android-apt'
+
+apt {
+    arguments {
+        androidManifestFile variant.processResources.manifestFile
+        resourcePackageName android.defaultConfig.packageName
+
+        // If you're using Android NBS flavors you should use the following line instead of hard-coded packageName
+        // resourcePackageName android.defaultConfig.packageName
+
+        // You can set optional annotation processing options here, like these commented options:
+        // logLevel 'INFO'
+        // logFile '/var/log/aa.log'
+    }
+}
+
+def AAVersion = '3.1'
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    // You must install or update the Support Repository through the SDK manager to use this dependency.
+    apt "org.androidannotations:androidannotations:$AAVersion"
+    compile "org.androidannotations:androidannotations-api:$AAVersion"
+    compile 'com.android.support:support-v13:19.+'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.2'
+    compile 'com.google.code.gson:gson:2.2.4'
+}
