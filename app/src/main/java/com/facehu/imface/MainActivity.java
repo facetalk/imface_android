@@ -1,10 +1,11 @@
 package com.facehu.imface;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -14,12 +15,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.facehu.imface.fragment.MessagesFragment;
+import com.facehu.imface.global.Login;
+import com.facehu.imface.ui.BaseActivity;
+import com.facehu.imface.ui.LoginActivity_;
+import com.facehu.imface.ui.fragment.MessagesFragment_;
+import com.facehu.imface.ui.fragment.UsersFragment_;
 
 import java.util.Locale;
 
 
-public class MainActivity extends Activity implements ActionBar.TabListener {
+public class MainActivity extends BaseActivity implements ActionBar.TabListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -76,6 +81,14 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Context context = getApplicationContext();
+        if (!Login.isLogin(context)) {
+            startActivity(new Intent(context, LoginActivity_.class));
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -116,6 +129,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        Class[] fragmentClass = new Class[]{MessagesFragment_.class, UsersFragment_.class};
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -125,12 +139,10 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-
-            switch (position) {
-                case 0:
-                    return MessagesFragment.instantiate(getApplicationContext(), MessagesFragment.class.getName());
-                default:
-                    return PlaceholderFragment.newInstance(position + 1);
+            if (fragmentClass.length > position) {
+                return Fragment.instantiate(getApplicationContext(), fragmentClass[position].getName(), null);
+            } else {
+                return PlaceholderFragment.newInstance(position + 1);
             }
         }
 

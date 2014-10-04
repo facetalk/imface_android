@@ -30,6 +30,11 @@ android {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.releaseConfig
+            buildConfigField("String", "BASE_URI", "\"https://42.62.73.61/\"")
+        }
+        debug {
+            signingConfig signingConfigs.releaseConfig
+            buildConfigField("String", "BASE_URI", "\"https://42.62.73.61/\"")
         }
     }
 }
@@ -58,12 +63,12 @@ dependencies {
     // You must install or update the Support Repository through the SDK manager to use this dependency.
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
-    compile 'com.android.support:support-v13:19.+'
-    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.2'
-    compile 'com.google.code.gson:gson:2.2.4'
-    compile 'pl.droidsonroids.gif:android-gif-drawable:1.0.+'
 
     androidTestCompile 'junit:junit:4.+'
-    androidTestCompile ('org.robolectric:robolectric:2.+')
+    androidTestCompile('org.robolectric:robolectric:2.+')
     androidTestCompile 'com.squareup:fest-android:1.+'
+    compile 'com.android.support:support-v13:20.0.0'
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.0.+'
+    compile project(':volley')
 }
