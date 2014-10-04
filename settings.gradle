@@ -1,2 +1,3 @@
-include ':app', ':umeng'
+include ':app', ':umeng', ':volley'
 project(':umeng').projectDir = new File('libraries/umeng')
+project(':volley').projectDir = new File('libraries/volley')
